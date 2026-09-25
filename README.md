@@ -1,2 +1,29 @@
 # OLenchik_wuf_and_drawnosaur2
-1
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Привет</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    padding: 20px;
+}
+</style>
+</head>
+<body>
+    <h1>привет я говорил что могу и смог )))<br>@iliatea69</h1>
+</body>
+</html>
