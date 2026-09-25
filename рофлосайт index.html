@@ -1,68 +1,78 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Вопрос</title>
+<title>Вопросы</title>
 <style>
-    body {
-        background: #111;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin-top: 100px;
-        overflow: hidden;
-    }
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 80px;
+    overflow: hidden;
+}
 
-    h1 {
-        margin-bottom: 40px;
-    }
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+}
 
-    button {
-        padding: 15px 30px;
-        font-size: 20px;
-        cursor: pointer;
-        position: absolute;
-    }
+#question2, #result {
+    display: none;
+}
 
-    #yesBtn {
-        left: 45%;
-        top: 250px;
-    }
-
-    #noBtn {
-        left: 55%;
-        top: 250px;
-    }
-
-    #result {
-        margin-top: 100px;
-        font-size: 32px;
-        color: #4cff4c;
-        display: none;
-    }
+#noBtn1 {
+    position: absolute;
+}
 </style>
 </head>
 <body>
 
-<h1>
-Я могу поиграть чутка )))<br>
-Ответьте на вопрос:<br><br>
-Вы любите оленьчика?
-</h1>
+<div id="question1">
+    <h1>
+        Я могу поиграть чутка )))<br>
+        Ответьте на вопрос:<br><br>
+        Вы любите оленьчика?
+    </h1>
 
-<button id="yesBtn" onclick="correctAnswer()">Да</button>
-<button id="noBtn">Нет</button>
+    <button onclick="showQuestion2()">Да</button>
+    <button id="noBtn1">Нет</button>
+</div>
+
+<div id="question2">
+    <h1>Вы любите дино?</h1>
+
+    <button onclick="showGood()">Да</button>
+    <button onclick="showBad()">Нет</button>
+</div>
 
 <div id="result">
-    Молодец, ответ правильный!
+    <h1 id="resultText"></h1>
 </div>
 
 <script>
-function correctAnswer() {
-    document.getElementById("result").style.display = "block";
+function showQuestion2() {
+    document.getElementById("question1").style.display = "none";
+    document.getElementById("question2").style.display = "block";
 }
 
-const noBtn = document.getElementById("noBtn");
+function showGood() {
+    document.getElementById("question2").style.display = "none";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("resultText").innerText =
+        "Молодец, я тоже!";
+}
+
+function showBad() {
+    document.getElementById("question2").style.display = "none";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("resultText").innerText =
+        "Нет? И пошел ты тогда на х";
+}
+
+const noBtn = document.getElementById("noBtn1");
 
 document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
@@ -74,12 +84,13 @@ document.addEventListener("mousemove", (e) => {
 
     if (distance < 120) {
         const maxX = window.innerWidth - noBtn.offsetWidth;
-        const maxY = window.innerHeight - noBtn.offsetHeight;
-
-        noBtn.style.left = Math.random() * maxX + "px";
+noBtn.style.left = Math.random() * maxX + "px";
         noBtn.style.top = Math.random() * maxY + "px";
     }
 });
+
+noBtn.style.left = "55%";
+noBtn.style.top = "260px";
 </script>
 
 </body>
