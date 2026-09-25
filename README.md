@@ -69,7 +69,7 @@ function showBad() {
     document.getElementById("question2").style.display = "none";
     document.getElementById("result").style.display = "block";
     document.getElementById("resultText").innerText =
-        "Нет? И пошел ты тогда на х";
+        "Нет? И пошел ты тогда на хуй, не правельный ответ XD";
 }
 
 const noBtn = document.getElementById("noBtn1");
