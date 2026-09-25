@@ -1,29 +1,64 @@
-# OLenchik_wuf_and_drawnosaur2
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Привет</title>
+<title>Да или Нет</title>
 <style>
 body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: #111;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
+    margin-top: 100px;
 }
 
-h1 {
-    font-size: 3rem;
-    padding: 20px;
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 30px;
+    display: none;
+}
+
+img {
+    max-width: 400px;
+    border-radius: 10px;
 }
 </style>
 </head>
 <body>
-    <h1>привет я говорил что могу и смог )))<br>@iliatea69</h1>
+
+<h2>Нажми кнопку</h2>
+
+<button onclick="showYes()">Да</button>
+<button onclick="showNo()">Нет</button>
+
+<div id="result">
+    <img id="image" src="" alt="">
+    <h1 id="text"></h1>
+</div>
+
+<script>
+function showYes() {
+    document.getElementById("image").src =
+        "https://via.placeholder.com/400x250?text=ДА";
+    document.getElementById("text").innerText =
+        "привет я говорил что могу и смог ))) @iliatea69";
+    document.getElementById("result").style.display = "block";
+}
+
+function showNo() {
+    document.getElementById("image").src =
+        "https://via.placeholder.com/400x250?text=НЕТ";
+    document.getElementById("text").innerText =
+        "привет я говорил что могу и смог ))) @iliatea69";
+    document.getElementById("result").style.display = "block";
+}
+</script>
+
 </body>
 </html>
