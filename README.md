@@ -1,63 +1,84 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Да или Нет</title>
+<title>Вопрос</title>
 <style>
-body {
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 100px;
-}
+    body {
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 100px;
+        overflow: hidden;
+    }
 
-button {
-    padding: 15px 30px;
-    font-size: 20px;
-    margin: 10px;
-    cursor: pointer;
-}
+    h1 {
+        margin-bottom: 40px;
+    }
 
-#result {
-    margin-top: 30px;
-    display: none;
-}
+    button {
+        padding: 15px 30px;
+        font-size: 20px;
+        cursor: pointer;
+        position: absolute;
+    }
 
-img {
-    max-width: 400px;
-    border-radius: 10px;
-}
+    #yesBtn {
+        left: 45%;
+        top: 250px;
+    }
+
+    #noBtn {
+        left: 55%;
+        top: 250px;
+    }
+
+    #result {
+        margin-top: 100px;
+        font-size: 32px;
+        color: #4cff4c;
+        display: none;
+    }
 </style>
 </head>
 <body>
 
-<h2>Нажми кнопку</h2>
+<h1>
+Я могу поиграть чутка )))<br>
+Ответьте на вопрос:<br><br>
+Вы любите оленьчика?
+</h1>
 
-<button onclick="showYes()">Да</button>
-<button onclick="showNo()">Нет</button>
+<button id="yesBtn" onclick="correctAnswer()">Да</button>
+<button id="noBtn">Нет</button>
 
 <div id="result">
-    <img id="image" src="" alt="">
-    <h1 id="text"></h1>
+    Молодец, ответ правильный!
 </div>
 
 <script>
-function showYes() {
-    document.getElementById("image").src =
-        "https://via.placeholder.com/400x250?text=ДА";
-    document.getElementById("text").innerText =
-        "привет я говорил что могу и смог ))) @iliatea69";
+function correctAnswer() {
     document.getElementById("result").style.display = "block";
 }
 
-function showNo() {
-    document.getElementById("image").src =
-        "https://via.placeholder.com/400x250?text=НЕТ";
-    document.getElementById("text").innerText =
-        "привет я говорил что могу и смог ))) @iliatea69";
-    document.getElementById("result").style.display = "block";
-}
+const noBtn = document.getElementById("noBtn");
+
+document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+
+    const distance = Math.sqrt(
+        Math.pow(e.clientX - (rect.left + rect.width / 2), 2) +
+        Math.pow(e.clientY - (rect.top + rect.height / 2), 2)
+    );
+
+    if (distance < 120) {
+        const maxX = window.innerWidth - noBtn.offsetWidth;
+        const maxY = window.innerHeight - noBtn.offsetHeight;
+
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
+    }
+});
 </script>
 
 </body>
