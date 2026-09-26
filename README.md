@@ -1,96 +1,276 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Вопросы</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Опрос</title>
+
 <style>
-body {
-    background: #111;
-    color: white;
+body{
     font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 80px;
-    overflow: hidden;
+    background:#f5f5f5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
 }
 
-button {
-    padding: 15px 30px;
-    font-size: 20px;
-    margin: 10px;
-    cursor: pointer;
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+    width:600px;
+    max-width:95%;
+    text-align:center;
 }
 
-#question2, #result {
-    display: none;
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
 }
 
-#noBtn1 {
-    position: absolute;
+.yes{
+    background:#4CAF50;
+    color:white;
+}
+
+.no{
+    background:#f44336;
+    color:white;
+    position:relative;
+}
+
+.hidden{
+    display:none;
+}
+
+.shapes button{
+    font-size:30px;
+    width:70px;
+    height:70px;
+}
+
+#result{
+    text-align:left;
 }
 </style>
 </head>
 <body>
 
-<div id="question1">
-    <h1>
-        Я могу поиграть чутка )))<br>
-        Ответьте на вопрос:<br><br>
-        Вы любите оленьчика?
-    </h1>
+<div class="card">
 
-    <button onclick="showQuestion2()">Да</button>
-    <button id="noBtn1">Нет</button>
-</div>
+    <h2 id="question"></h2>
 
-<div id="question2">
-    <h1>Вы любите дино?</h1>
+    <div id="mainButtons">
+        <button class="yes" onclick="yesAnswer()">Да</button>
+        <button class="no" id="noBtn">Нет</button>
+    </div>
 
-    <button onclick="showGood()">Да</button>
-    <button onclick="showBad()">Нет</button>
-</div>
+    <div id="extra"></div>
 
-<div id="result">
-    <h1 id="resultText"></h1>
 </div>
 
 <script>
-function showQuestion2() {
-    document.getElementById("question1").style.display = "none";
-    document.getElementById("question2").style.display = "block";
-}
 
-function showGood() {
-    document.getElementById("question2").style.display = "none";
-    document.getElementById("result").style.display = "block";
-    document.getElementById("resultText").innerText =
-        "Молодец, я тоже!";
-}
-
-function showBad() {
-    document.getElementById("question2").style.display = "none";
-    document.getElementById("result").style.display = "block";
-    document.getElementById("resultText").innerText =
-        "Нет? И пошел ты тогда на хуй, не правельный ответ XD";
-}
-
-const noBtn = document.getElementById("noBtn1");
-
-document.addEventListener("mousemove", (e) => {
-    const rect = noBtn.getBoundingClientRect();
-
-    const distance = Math.sqrt(
-        Math.pow(e.clientX - (rect.left + rect.width / 2), 2) +
-        Math.pow(e.clientY - (rect.top + rect.height / 2), 2)
-    );
-
-    if (distance < 120) {
-        const maxX = window.innerWidth - noBtn.offsetWidth;
-noBtn.style.left = Math.random() * maxX + "px";
-        noBtn.style.top = Math.random() * maxY + "px";
+const questions = [
+    {
+        text:"Вы любите Оленьчика?",
+        type:"special"
+    },
+    {
+        text:"Вы любите Дино?",
+        type:"dino"
+    },
+    {
+        text:"Вы любите Снежу?",
+        type:"special"
     }
+];
+
+let current = 0;
+let answers = [];
+
+const questionEl = document.getElementById("question");
+const extra = document.getElementById("extra");
+const noBtn = document.getElementById("noBtn");
+
+function showQuestion(){
+    extra.innerHTML="";
+    document.getElementById("mainButtons").style.display="block";
+
+    if(current >= questions.length){
+        showResults();
+        return;
+    }
+
+    questionEl.textContent = questions[current].text;
+}
+
+function yesAnswer(){
+
+    if(questions[current].type==="dino"){
+        alert("Молодец, я тоже!");
+    }
+
+    answers.push({
+        question:questions[current].text,
+        answer:"Да"
+    });
+
+    current++;
+    showQuestion();
+}
+
+function noAnswer(){
+
+    if(questions[current].type==="dino"){
+        alert("Неправильный ответ бубубу");
+        answers.push({
+            question:questions[current].text,
+            answer:"Нет"
+        });
+
+        current++;
+        showQuestion();
+        return;
+    }
+
+    document.getElementById("mainButtons").style.display="none";
+
+    extra.innerHTML=`
+        <h3>Вы уверены?</h3>
+        <button onclick="backToQuestion()">Нет</button>
+        <button onclick="showMath()">Да</button>
+    `;
+}
+
+function backToQuestion(){
+    showQuestion();
+}
+
+function showMath(){
+
+    extra.innerHTML=`
+        <h3>Решите пример:</h3>
+        <p>7 + 5 = ?</p>
+        <input id="mathAnswer" type="number">
+        <br><br>
+        <button onclick="checkMath()">Ответить</button>
+    `;
+}
+
+function checkMath(){
+
+    const val = document.getElementById("mathAnswer").value;
+
+    if(val != 12){
+        alert("Неверно!");
+        return;
+    }
+
+    showShapes();
+}
+
+let shapeOrder = [];
+const correctOrder = ["circle","square","triangle"];
+
+function showShapes(){
+
+    shapeOrder=[];
+
+    extra.innerHTML=`
+        <h3>Нажмите фигуры в правильном порядке</h3>
+
+        <div class="shapes">
+            <button onclick="pickShape('circle')">⚪</button>
+            <button onclick="pickShape('square')">⬜</button>
+            <button onclick="pickShape('triangle')">🔺</button>
+        </div>
+
+        <p>Порядок: Круг → Квадрат → Треугольник</p>
+    `;
+}
+
+function pickShape(shape){
+
+    shapeOrder.push(shape);
+
+    if(shapeOrder.length===3){
+
+        if(JSON.stringify(shapeOrder)!==
+           JSON.stringify(correctOrder))
+        {
+            alert("Неправильный порядок!");
+            showShapes();
+            return;
+        }
+
+        finalConfirm();
+    }
+}
+
+function finalConfirm(){
+
+    extra.innerHTML=`
+        <h3>Вы точно-точно уверены?</h3>
+
+        <button onclick="backToQuestion()">Нет</button>
+
+        <button onclick="acceptNo()">
+            Да
+        </button>
+    `;
+}
+
+function acceptNo(){
+
+    alert("Ну и ладно");
+
+    answers.push({
+        question:questions[current].text,
+        answer:"Нет"
+    });
+
+    current++;
+    showQuestion();
+}
+
+function showResults(){
+
+    questionEl.textContent="Список ответов";
+    document.getElementById("mainButtons").style.display="none";
+
+    let html="<div id='result'>";
+
+    answers.forEach(a=>{
+        html += `<p><b>${a.question}</b><br>Ответ: ${a.answer}</p>`;
+    });
+
+    html += "</div>";
+
+    extra.innerHTML=html;
+}
+
+noBtn.addEventListener("mouseover",()=>{
+
+    if(questions[current].type!=="special") return;
+
+    const x = Math.random()*300-150;
+    const y = Math.random()*200-100;
+
+    noBtn.style.transform=`translate(${x}px,${y}px)`;
 });
 
-noBtn.style.left = "55%";
-noBtn.style.top = "260px";
+noBtn.addEventListener("click",noAnswer);
+
+showQuestion();
+
 </script>
 
 </body>
