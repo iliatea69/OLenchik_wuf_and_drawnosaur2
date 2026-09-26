@@ -1,4 +1,3 @@
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -60,19 +59,23 @@ button{
     text-align:left;
 }
 </style>
+
 </head>
+
 <body>
 
 <div class="card">
 
-    <h2 id="question"></h2>
+```
+<h2 id="question"></h2>
 
-    <div id="mainButtons">
-        <button class="yes" onclick="yesAnswer()">Да</button>
-        <button class="no" id="noBtn">Нет</button>
-    </div>
+<div id="mainButtons">
+    <button class="yes" onclick="yesAnswer()">Да</button>
+    <button class="no" id="noBtn">Нет</button>
+</div>
 
-    <div id="extra"></div>
+<div id="extra"></div>
+```
 
 </div>
 
@@ -96,13 +99,23 @@ const questions = [
 let current = 0;
 let answers = [];
 
+// Счётчик нажатий на кнопку "Нет"
+let noClicks = 0;
+
 const questionEl = document.getElementById("question");
 const extra = document.getElementById("extra");
 const noBtn = document.getElementById("noBtn");
 
 function showQuestion(){
+
     extra.innerHTML="";
     document.getElementById("mainButtons").style.display="block";
+
+    // Сбрасываем счётчик при переходе к новому вопросу
+    noClicks = 0;
+
+    // Возвращаем кнопку на исходное место
+    noBtn.style.transform = "translate(0, 0)";
 
     if(current >= questions.length){
         showResults();
@@ -131,6 +144,7 @@ function noAnswer(){
 
     if(questions[current].type==="dino"){
         alert("Неправильный ответ бубубу");
+
         answers.push({
             question:questions[current].text,
             answer:"Нет"
@@ -257,17 +271,40 @@ function showResults(){
     extra.innerHTML=html;
 }
 
-noBtn.addEventListener("mouseover",()=>{
 
-    if(questions[current].type!=="special") return;
+// ==========================================
+// КНОПКА "НЕТ" — 5 НАЖАТИЙ
+// ==========================================
 
-    const x = Math.random()*300-150;
-    const y = Math.random()*200-100;
+noBtn.addEventListener("click", function(){
 
-    noBtn.style.transform=`translate(${x}px,${y}px)`;
+    // Для вопроса про Дино кнопка работает сразу
+    if(questions[current].type === "dino"){
+        noAnswer();
+        return;
+    }
+
+    noClicks++;
+
+    // Первые 4 нажатия — перемещаем кнопку
+    if(noClicks < 5){
+
+        const x = Math.random() * 300 - 150;
+        const y = Math.random() * 200 - 100;
+
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+        // Можно показать количество оставшихся нажатий
+        noBtn.textContent = `Нет (${5 - noClicks})`;
+
+    } else {
+
+        // После 5-го нажатия выполняем обычное действие
+        noBtn.textContent = "Нет";
+
+        noAnswer();
+    }
 });
-
-noBtn.addEventListener("click",noAnswer);
 
 showQuestion();
 
